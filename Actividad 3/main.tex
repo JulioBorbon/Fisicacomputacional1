@@ -1,0 +1,105 @@
+\documentclass[notitlepage]{report}
+\usepackage{graphicx}
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+\usepackage[spanish]{babel}
+\selectlanguage{spanish}
+\spanishdecimal{.}
+\usepackage[utf8]{inputenc}
+    
+\usepackage{titling}
+\usepackage{lipsum}
+\title{Actividad 3: Pandas }
+\author{Borbón Fragoso Julio Cèsar }
+\date{11 de febrero del 2019}
+
+\begin{document}
+
+\maketitle
+
+\section*{Comandos en Pandas}
+Pandas es una libreria para facilitar el manejo de datos en el lenguaje Python, tiene varias funciones a continuación se describen algunas de estas: \\
+
+{\bfseries pd.read\_csv} : Con esta función podemos leer un archivo en formato CSV (comma-separated values) \\
+{\bfseries pd.head()}: Está función sirve para leer los primeros archivos de una tabla, en el parentesis se puede ingersar el número de archivos que deseas leer. \\
+{\bfseries df.tail()}: Parecido al head pero muestra los últimos archivos
+\\
+{\bfseries df.dtypes}: Nos muestra como se han leido de manera automatica nuestras variables. 
+\\
+{\bfseries pd.to\_datetime}: Cambia una columna escogida a la variable de DATETIME para poder tratarla como tiempo 
+\\ 
+{\bfseries pd.options}: Podemos configurar la configuración de pandas, como por ejemplo cambiar el número predeterminado de columnas que se muestran, etc. 
+\\
+{\bfseries pd.to\_numeric}: Cambia una columna para que puede ser detectada como variable numérica. 
+\\
+{\bfseries df.mean()}: Nos muestra la media de las columnas
+\\
+{\bfseries df.std/median/max/min} : Nos muestra la varianza, la mediana, el máximo y el mínimo respectivamente.
+\\
+{\bfseries df.describe()}: Muestra un resumen estadistico con información varia
+\\
+{\bfseries df.count}: Nos muestra la cantidad de datos en una columna
+\\
+{\bfseries df.drop}: Deshecha una columna de los datos. 
+\\
+{\bfseries pd.dataframe}: Da  estructura de datos a nuestro archivo 
+\\
+{\bfseries df.resample}: Método de convenencia para transformación de frecuencia, solo se puede usar en variables relacionadas con la fecha. \\
+{\bfseries}
+\\
+\section*{Preguntas}
+Se incluyen las siguientes preguntas con un fragmento de codigo de como se resolvieron. 
+
+{\bfseries ¿Cómo le podrás determinar cuáles son los meses más lluviosos?}
+\begin{verbatim} 
+#La precipitación esta sumamente relacionada con la lluvia así que asumiremos
+#que toda la cantida de precipitación es debido únicamente a las lluvias
+#Declarando una nueva variable df10, usamos el comando set index y resample para sacar 
+#la media de cada mes 
+df10 = df9.set_index('FECHA').resample('M')["PRECIP"].mean()
+#Se muestra df10 que es una tabla de datos y con esto podemos ver cuales meses han tenido mayor 
+#precipitación 
+df10
+
+\end{verbatim}
+--- \\
+--- \\
+{\bfseries ¿Cuáles son los meses más fríos y cuáles son los más cálidos?}
+\begin{verbatim}
+#se declara una tabla df11 que tenga la media de las temperaturas
+df11 = df9.set_index('FECHA').resample('M')["TMAX", "TMIN"].mean()
+#Se lee la tabla y se checan los valores
+df11
+\end{verbatim}
+\\
+{\bfseries ¿Cuáles han sido años muy húmedos/secos?}
+\begin{verbatim}
+#De la misma manera que la primer pregunta, pero cambiamos
+#la frecuencia a anual. 
+df12 = df9.set_index('FECHA').resample('Y')["PRECIP"].mean()
+#Se imprime df12 para revisar sus datos
+df12
+\end{verbatim}
+{\bfseries ¿Cuáles años han tenido inviernos fríos/calidos?}
+\begin{verbatim}
+#DE la misma manera que la pregunta anterior
+df13 = df9.set_index('FECHA').resample('Y')["TMAX", "TMIN"].mean()
+df13
+\end{verbatim}
+{\bfseries ¿Cómo ha venido siendo la temperatura mensual promedio en los últimos 20 años?}
+\begin{verbatim}
+#Se crea una nueva columna de la suma de los promedios
+#de Tmin y Tmax y se divide entre 2 
+df12['prom'] = (df12['TMAX'] + df12['TMIN'])/2
+#Se muestran únicamente los últimos 20 datos
+df12.tail(20)
+\end{verbatim}
+{\bfseries ¿Qué ha pasado con la precipitación en los últimos 20 años de datos?}
+\begin{verbatim}
+#Se modifica df10 para que tenga la media de precipitación anual
+df10 = df9.set_index('FECHA').resample('Y')["PRECIP"].mean()
+#Se muestran los últimos 20 datos
+df10.tail(20)
+\end{verbatim}
+
+Con esto se da concluida la activdad 3 realizada para conocer mejor la libreria para Python, Pandas.
+\end{document}
